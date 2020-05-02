@@ -13,6 +13,7 @@ class Grid{
      this.started = false;
      this.ended = false;
      this.fillS = false;
+     this.weight = 0.95;
      this.state = "Set start and end"
      for (let i = 0; i < this.rows; i++){
        this.squares.push([]);
@@ -96,7 +97,7 @@ class Grid{
                     if (!this.openList.includes(this.squares[y][x+i])){
                       let g = current.g + 1;
                       let h = abs(this.end[1] - (x + i)) + abs(this.end[0] - y);
-                      this.squares[y][x+i].g = g;
+                      this.squares[y][x+i].g = g*this.weight;
                       this.squares[y][x+i].h = h;
                       this.squares[y][x+i].f = g + h;
                       this.squares[y][x+i].parent = current;
@@ -105,7 +106,7 @@ class Grid{
                     } else {
                       if (this.squares[y][x+i].g > current.g + 1) {
                         this.squares[y][x+i].parent = current;
-                        this.squares[y][x+i].g = current.g + 1;
+                        this.squares[y][x+i].g = (current.g + 1)*this.weight;
                         this.squares[y][x+i].f = this.squares[y][x+i].h + this.squares[y][x+i].g;
                       }
                     }
@@ -115,7 +116,7 @@ class Grid{
                       let g = current.g + 1;
                       let h = abs(this.end[1] - x) + abs(this.end[0] - (y + i));
                       this.squares[y+i][x].h = h;
-                      this.squares[y+i][x].g = g;
+                      this.squares[y+i][x].g = g*this.weight;
                       this.squares[y+i][x].f = g + h;
                       this.squares[y+i][x].parent = current;
                       this.openList.push(this.squares[y+i][x]);
@@ -123,7 +124,7 @@ class Grid{
                     } else {
                       if (this.squares[y+i][x].g > current.g + 1) {
                       this.squares[y+i][x].parent = current;
-                      this.squares[y+i][x].g = current.g + 1;
+                      this.squares[y+i][x].g = (current.g + 1)*this.weight;
                       this.squares[y+i][x].f = this.squares[y+i][x].g + this.squares[y+i][x].h;
                     }
                   }
